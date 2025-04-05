@@ -1,7 +1,7 @@
 package com.broker.BrokerApp.controller;
 
 import com.broker.BrokerApp.exeption.BusinessException;
-import com.broker.BrokerApp.model.request.RegisterRequest;
+import com.broker.BrokerApp.model.User;
 import com.broker.BrokerApp.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +20,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) throws BusinessException {
-        userService.registerUser(request.getUsername(), request.getPassword());
+    public ResponseEntity<String> register(@RequestBody User request) throws BusinessException {
+        userService.registerUser(request.getEmail(), request.getPassword());
         return ResponseEntity.ok("User registered successfully.");
     }
 

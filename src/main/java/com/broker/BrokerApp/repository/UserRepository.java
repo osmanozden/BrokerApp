@@ -11,8 +11,12 @@ public class UserRepository {
 
     private static final String INSERT_USER_SQL =
             "INSERT INTO users (username, password) VALUES (:username, :password)";
+
     private static final String SELECT_USER_SQL =
             "SELECT COUNT(*) FROM users WHERE username = :username";
+
+    private static final String SELECT_USER_BY_USERNAME_SQL =
+            "SELECT COUNT(*) FROM users WHERE username = :username AND password = :password";
 
     public UserRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -30,7 +34,6 @@ public class UserRepository {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("username", username)
                 .addValue("password", hashedPassword);
-
         jdbcTemplate.update(INSERT_USER_SQL, params);
     }
 
@@ -39,8 +42,7 @@ public class UserRepository {
         params.addValue("username", username);
         params.addValue("password", password);
 
-        String sql = "SELECT COUNT(*) FROM users WHERE username = :username AND password = :password";
-        Integer count = jdbcTemplate.queryForObject(sql, params, Integer.class);
+        Integer count = jdbcTemplate.queryForObject(SELECT_USER_BY_USERNAME_SQL, params, Integer.class);
         return count != null && count > 0;
     }
 }
